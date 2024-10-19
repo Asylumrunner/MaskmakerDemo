@@ -3,5 +3,5 @@
     "subheader": "I'm an API developed by Michael Burdick to help run tabletop RPGs!",
     "block_text_1": "This page is a little web demo designed to show off the capabilities of Maskmaker, a RESTful API designed to help Game Masters run tabletop RPGs by dynamically generating character profiles in games",
     "block_text_2": "Use this page to generate some random characters, as well as to provide your own custom names to use and to create Markov Chains provided by a sample set of names to help tailor the created characters to your specific preferences!",
-    "github_link": ""
+    "github_link": "https://github.com/Asylumrunner/Maskmaker"
 }
