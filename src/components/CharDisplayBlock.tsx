@@ -1,25 +1,32 @@
-import { useSelector } from "react-redux";
-import { useGetCharacterMutation } from "../store";
+import { useSelector, useDispatch } from "react-redux";
+import { setCharacter, useGetCharacterMutation } from "../store";
+import CharacterCard from "./CharacterCard";
 
 function CharDisplayBlock() {
-    
-    const {generatedCharacter, settings, markovChain } = useSelector((state) => {
-        return state
-    })
+    console.log("I AM RERENDERING")
+    const dispatch = useDispatch()
 
+    const [getCharacter, {isLoading}] = useGetCharacterMutation()
     
+    const character = useSelector((state) => {
+        return state.character
+    });
 
-    const content = (character != null) ?
-        (<div>
-            <p>{character.name}</p>
-            <p>{character.traits}</p>
-            <p>{character.attributes}</p>
-        </div>) :
-        (<div>I ain't got no character, fucker</div>)
+    console.log(character)
+
+    let requestBody = {
+        number: 1
+    }
+
+    const handleGetCharacterSubmit = async (event) => {
+        event.preventDefault()
+        const { data } = await getCharacter(requestBody)
+        dispatch(setCharacter(data.characters[0]))
+    }
 
     return (<div>
-        {content}
-        <button>Generate New Character</button>
+        {character && <CharacterCard />}
+        <button onClick={handleGetCharacterSubmit} disabled={isLoading}>Create Character</button>
     </div>)
 }
 

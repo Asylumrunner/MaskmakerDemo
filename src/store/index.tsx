@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { maskmakerApi } from './maskmakerApi';
-import { generatedDataReducer, setMarkovChain, setAttributes, setGender, setListOfNames, setRegion } from './generatedDataSlice';
+import { generatedDataReducer, setCharacter, setMarkovChain, setAttributes, setGender, setListOfNames, setRegion } from './generatedDataSlice';
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +16,5 @@ export const store = configureStore({
 
 setupListeners(store.dispatch);
 
-export { setMarkovChain, setAttributes, setGender, setListOfNames, setRegion }
+export { setMarkovChain, setCharacter, setAttributes, setGender, setListOfNames, setRegion }
 export { useFetchHealthQuery, useGetCharacterMutation, useGetCharacterCustomNameMutation } from './maskmakerApi'
