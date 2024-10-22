@@ -2,7 +2,7 @@ import * as content from "../assets/raw_text.json"
 
 function HeaderBlock() {
 
-    return (<div>
+    return (<div className="mb-10">
         <p>{content.header}</p>
         <p>{content.subheader}</p>
         <p>{content.block_text_1}</p>

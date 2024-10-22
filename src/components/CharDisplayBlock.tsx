@@ -1,18 +1,11 @@
-import { useSelector, useDispatch } from "react-redux";
-import { setCharacter, useGetCharacterMutation } from "../store";
+import { useState } from "react";
+import { useGetCharacterMutation } from "../store";
 import CharacterCard from "./CharacterCard";
 
 function CharDisplayBlock() {
-    console.log("I AM RERENDERING")
-    const dispatch = useDispatch()
 
     const [getCharacter, {isLoading}] = useGetCharacterMutation()
-    
-    const character = useSelector((state) => {
-        return state.character
-    });
-
-    console.log(character)
+    var [character, setCharacter] = useState(null);
 
     let requestBody = {
         number: 1
@@ -21,11 +14,11 @@ function CharDisplayBlock() {
     const handleGetCharacterSubmit = async (event) => {
         event.preventDefault()
         const { data } = await getCharacter(requestBody)
-        dispatch(setCharacter(data.characters[0]))
+        setCharacter(data.characters[0])
     }
 
     return (<div>
-        {character && <CharacterCard />}
+        {character && <CharacterCard char={character}/>}
         <button onClick={handleGetCharacterSubmit} disabled={isLoading}>Create Character</button>
     </div>)
 }
