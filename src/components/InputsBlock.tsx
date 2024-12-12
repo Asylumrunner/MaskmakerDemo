@@ -1,34 +1,46 @@
 import { useSelector, useDispatch } from "react-redux"
 import { SetStateAction, useState } from "react";
+import { useGetCharacterMutation } from "../store";
 import Select from "react-select";
-import { setRegion, setAttributes, setListOfNames, setGender, RootState } from "../store"
+import { setCharacter } from "../store"
 
 function InputsBlock() {
     const dispatch = useDispatch()
-    const [nameInput, setNameInput] = useState("")
-    const [attributeInput, setAttributeInput] = useState("")
-    const { settings } = useSelector((state: RootState) => {
-        return state.generatedData.settings
-    })
+    const [name, setName] = useState("")
+    const [attributes, setAttributes] = useState("")
+    const [gender, setGender] = useState("")
+    const [region, setRegion] = useState("")
+    const [getCharacter, {isLoading}] = useGetCharacterMutation()
 
     const handleNamesChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         var input: any = event.target.value
-        setNameInput(input)
-        dispatch(setListOfNames(input.split(',')))
+        setName(input)
     }
 
     const handleSetRegion = (option: any) => {
-        dispatch(setRegion(option.value))
+        setRegion(option.value)
     }
 
     const handleAttributesChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         var input: any = event.target.value
-        setAttributeInput(input)
-        dispatch(setAttributes(input.split(',')))
+        setAttributes(input)
     }
 
     const handleSetGender = (option: any) => {
-        dispatch(setGender(option.value))
+        setGender(option.value)
+    }
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault()
+        var split_atts = attributes.split(',')
+        const requestBody = {
+            number: 1,
+            ...(gender != "" && {gender}),
+            ...(region != "" && {region}),
+            ...(attributes != "" && {split_atts})
+        }
+        const { data } = await getCharacter(requestBody)
+        dispatch(setCharacter(data.characters[0]))
     }
 
 
@@ -68,13 +80,16 @@ function InputsBlock() {
     const genderSelect = (<Select className="text-black" defaultValue={genderOptions[0].value} options={genderOptions} onChange={handleSetGender}/>)
 
     return (<div>
-        <div>{regionSelect}</div> <br/>
-        <div>{genderSelect}</div> <br />
-        <input value={nameInput} onChange={handleNamesChange}/> <br />
-        <input value={attributeInput} onChange={handleAttributesChange}/> <br/>
-        <p>A button to generate a markov chain based on that list of names</p>
-        <p>A button to autopopulate the input field with sample names so people don't have to do it themselves</p>
-        <p>Some sort of indicator that the markov chain has been created</p>
+        <form onSubmit={handleSubmit}>
+            <div>{regionSelect}</div> <br/>
+            <div>{genderSelect}</div> <br />
+            <input value={attributes} onChange={handleAttributesChange}/> <br/>
+            <input value={name} onChange={handleNamesChange}/> <br />
+            <p>A button to generate a markov chain based on that list of names</p>
+            <p>A button to autopopulate the input field with sample names so people don't have to do it themselves</p>
+            <p>Some sort of indicator that the markov chain has been created</p>
+            <button type="submit" disabled={isLoading}>Generate A Character</button>
+        </form>
     </div>)
 }
 
