@@ -3,6 +3,8 @@ import { SetStateAction, useState } from "react";
 import { useGetCharacterMutation } from "../store";
 import Select from "react-select";
 import { setCharacter } from "../store"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSquareCheck, faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 
 function InputsBlock() {
     const dispatch = useDispatch()
@@ -32,16 +34,20 @@ function InputsBlock() {
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
-        var split_atts = attributes.split(',')
+        var split_atts = attributes.split(',').map(s => s.trim())
         const requestBody = {
             number: 1,
             ...(gender != "" && {gender}),
             ...(region != "" && {region}),
-            ...(attributes != "" && {split_atts})
+            ...(attributes != "" && {attributes: split_atts})
         }
         const { data } = await getCharacter(requestBody)
         dispatch(setCharacter(data.characters[0]))
     }
+
+    const attributeValidationRegex = /^\w*(?:, ?\w+)*$/
+    const attributeStringValid = attributeValidationRegex.test(attributes)
+    const attributeCheckIcon = attributeStringValid ? <FontAwesomeIcon icon={faSquareCheck} size="lg" /> : <FontAwesomeIcon icon={faSquareXmark} size="lg" />
 
 
     // AU, BR, CA, CH, DE, DK, ES, FI, FR, GB, IE, IN, IR, MX, NL, NO, NZ, RS, TR, UA, US
@@ -49,12 +55,10 @@ function InputsBlock() {
         {value: "AU", label: "Australia"},
         {value: "BR", label: "Brazil"},
         {value: "CA", label: "Canada"},
-        {value: "CH", label: "Switzerland"},
-        {value: "DE", label: "Germany"},
         {value: "DK", label: "Denmark"},
-        {value: "ES", label: "Spain"},
         {value: "FI", label: "Finland"},
         {value: "FR", label: "France"},
+        {value: "DE", label: "Germany"},
         {value: "GB", label: "Great Britain"},
         {value: "IE", label: "Ireland"},
         {value: "IN", label: "India"},
@@ -64,12 +68,29 @@ function InputsBlock() {
         {value: "NO", label: "Norway"},
         {value: "NZ", label: "New Zealand"},
         {value: "RS", label: "Russia"},
+        {value: "ES", label: "Spain"},
+        {value: "CH", label: "Switzerland"},
         {value: "TR", label: "Turkiye"},
         {value: "UA", label: "Ukraine"},
         {value: "US", label: "United States"},
     ]
 
-    const regionSelect = (<Select className="text-black" defaultValue={regionOptions[0].value} options={regionOptions} onChange={handleSetRegion}/>)
+    const customStyles = {
+        option: (provided: any) => ({
+          ...provided,
+          color: 'black'
+        }),
+        control: (provided: any) => ({
+          ...provided,
+          color: 'black'
+        }),
+        singleValue: (provided: any) => ({
+          ...provided,
+          color: 'black'
+        })
+      }
+
+    const regionSelect = (<Select className="text-black" styles={customStyles} defaultValue={regionOptions[0].value} options={regionOptions} onChange={handleSetRegion}/>)
 
     // male, female
     const genderOptions = [
@@ -77,19 +98,21 @@ function InputsBlock() {
         {value: "female", label: "Female"}
     ]
 
-    const genderSelect = (<Select className="text-black" defaultValue={genderOptions[0].value} options={genderOptions} onChange={handleSetGender}/>)
+    const genderSelect = (<Select className="text-black" styles={customStyles} defaultValue={genderOptions[0].value} options={genderOptions} onChange={handleSetGender}/>)
 
-    return (<div>
+    return (<div className="font-nunito">
+        <div className="font-varela-round text-2xl">Character Generation Options</div>
         <form onSubmit={handleSubmit}>
+            <div className="text-xl">Nationality</div>
             <div>{regionSelect}</div> <br/>
+            <div className="text-xl">Sex</div>
             <div>{genderSelect}</div> <br />
-            <input value={attributes} onChange={handleAttributesChange}/> <br/>
-            <input value={name} onChange={handleNamesChange}/> <br />
-            <p>A button to generate a markov chain based on that list of names</p>
-            <p>A button to autopopulate the input field with sample names so people don't have to do it themselves</p>
-            <p>Some sort of indicator that the markov chain has been created</p>
+            <div className="text-xl">Custom Attributes</div>
+            <div>Please use a comma-separated string</div>
+            <input value={attributes} onChange={handleAttributesChange}/>    {attributeCheckIcon} <br/><br/>
             <button type="submit" disabled={isLoading}>Generate A Character</button>
         </form>
+            
     </div>)
 }
 

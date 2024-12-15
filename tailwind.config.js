@@ -5,7 +5,16 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    colors: {
+      'victoria': '#54477d',
+      'card-red': '#992826'
+    },
+    extend: {
+      fontFamily: {
+        "nunito": ['Nunito', 'sans-serif'],
+        "varela-round": ["Varela Round", 'sans-serif']
+      }
+    },
   },
   plugins: [],
 }

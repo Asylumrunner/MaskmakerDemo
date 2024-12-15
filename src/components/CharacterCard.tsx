@@ -7,8 +7,8 @@ function CharacterCard({char}) {
     const attr = Object.keys(char.attribute).map((att) => {
         return (<div key={att}>{att}: {char.attribute[att]}</div>)
     })
-    return (<div>
-        <p className="text-2xl">{char.name}</p>
+    return (<div className="font-nunito font-semibold bg-card-red mr-40 p-16 rounded-3xl">
+        <p className="text-4xl font-varela-round">{char.name}</p>
         <br />
         <div>{traits}</div>
         <br />
