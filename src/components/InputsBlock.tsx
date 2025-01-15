@@ -6,6 +6,11 @@ import { setCharacter } from "../store"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareCheck, faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 
+interface Option {
+    value: string;
+    label: string;
+}
+
 function InputsBlock() {
     const dispatch = useDispatch()
     const [name, setName] = useState("")
@@ -19,17 +24,9 @@ function InputsBlock() {
         setName(input)
     }
 
-    const handleSetRegion = (option: any) => {
-        setRegion(option.value)
-    }
-
     const handleAttributesChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         var input: any = event.target.value
         setAttributes(input)
-    }
-
-    const handleSetGender = (option: any) => {
-        setGender(option.value)
     }
 
     const handleSubmit = async (event: any) => {
@@ -51,7 +48,7 @@ function InputsBlock() {
 
 
     // AU, BR, CA, CH, DE, DK, ES, FI, FR, GB, IE, IN, IR, MX, NL, NO, NZ, RS, TR, UA, US
-    const regionOptions = [
+    const regionOptions: Option[] = [
         {value: "AU", label: "Australia"},
         {value: "BR", label: "Brazil"},
         {value: "CA", label: "Canada"},
@@ -90,15 +87,29 @@ function InputsBlock() {
         })
       }
 
-    const regionSelect = (<Select className="text-black" styles={customStyles} defaultValue={regionOptions[0].value} options={regionOptions} onChange={handleSetRegion}/>)
+    const regionSelect = (<Select 
+        className="text-black" 
+        styles={customStyles} 
+        options={regionOptions} 
+        onChange={(option: Option | null) => {
+            setRegion(option != null ? option.value : "");
+        }}
+    />)
 
     // male, female
-    const genderOptions = [
+    const genderOptions: Option[] = [
         {value: "male", label: "Male"},
         {value: "female", label: "Female"}
     ]
 
-    const genderSelect = (<Select className="text-black" styles={customStyles} defaultValue={genderOptions[0].value} options={genderOptions} onChange={handleSetGender}/>)
+    const genderSelect = (<Select 
+        className="text-black" 
+        styles={customStyles} 
+        options={genderOptions} 
+        onChange={(option: Option | null) => {
+            setGender(option != null ? option.value : "");
+        }}
+    />)
 
     return (<div className="font-nunito">
         <div className="font-varela-round text-2xl">Character Generation Options</div>

@@ -1,6 +1,6 @@
-function CharacterCard({char}) {
+function CharacterCard({char} : {char: any}) {
 
-    const traits = char.traits.map((trait) => {
+    const traits = char.traits.map((trait: any) => {
         return (<div key={trait}>{trait}</div>)
     })
 

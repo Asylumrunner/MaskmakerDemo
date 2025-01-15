@@ -9,6 +9,7 @@ function HeaderBlock() {
         <p>{content.block_text_1}</p>
         <br/>
         <p>{content.block_text_2}</p>
+        <br/>
         <p>To see the guts of Maskmaker, and the documentation, check out <a href={content.github_link} target="_blank">the Github repo</a>!</p>
     </div>)
 }

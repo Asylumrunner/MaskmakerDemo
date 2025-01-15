@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/CharDisplayBlock.tsx","./src/components/CharacterCard.tsx","./src/components/HeaderBlock.tsx","./src/components/InputsBlock.tsx","./src/store/generatedDataSlice.tsx","./src/store/index.tsx","./src/store/maskmakerApi.tsx"],"version":"5.6.3"}
