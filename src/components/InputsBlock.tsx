@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { SetStateAction, useState } from "react";
 import { useGetCharacterMutation } from "../store";
 import Select from "react-select";
-import { setCharacter } from "../store"
+import { setCharacter, setLoading } from "../store"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareCheck, faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -31,6 +31,7 @@ function InputsBlock() {
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
+        dispatch(setLoading(true))
         var split_atts = attributes.split(',').map(s => s.trim())
         const requestBody = {
             number: 1,
@@ -39,6 +40,7 @@ function InputsBlock() {
             ...(attributes != "" && {attributes: split_atts})
         }
         const { data } = await getCharacter(requestBody)
+        dispatch(setLoading(false))
         dispatch(setCharacter(data.characters[0]))
     }
 

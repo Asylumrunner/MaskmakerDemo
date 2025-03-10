@@ -4,6 +4,7 @@ const generatedDataSlice = createSlice({
     name: "generatedData",
     initialState: {
         markovChain: null,
+        loading: false,
         character: null
     },
     reducers: {
@@ -13,9 +14,12 @@ const generatedDataSlice = createSlice({
         },
         setCharacter(state, action) {
             state.character = action.payload
+        },
+        setLoading(state, action) {
+            state.loading = action.payload
         }
     }
 });
 
-export const { setMarkovChain, setCharacter } = generatedDataSlice.actions
+export const { setMarkovChain, setCharacter, setLoading } = generatedDataSlice.actions
 export const generatedDataReducer = generatedDataSlice.reducer
